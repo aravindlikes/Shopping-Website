@@ -141,7 +141,7 @@ if(isset($_POST['remove']))
 					</form>
 					<div class="ui stackable grid">
 						<div class="row section">
-							<div class="eight wide column">
+							<div class="seven wide column">
 								<table class="ui table">
 									<thead>
 										<tr>
@@ -174,6 +174,7 @@ if(isset($_POST['remove']))
 									</tbody>
 								</table>
 							</div>
+							<div class="one wide column"></div>
 							<div class="eight wide column">
 								<form action="placeOrder.php" method="post">
 									<table class="ui table">
