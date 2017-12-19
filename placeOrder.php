@@ -25,21 +25,41 @@ if((isset($_POST['ordersubmit']))&&($_POST['paymode']=="cash"))
 if((isset($_POST['ordersubmit']))&&($_POST['paymode']=="online"))
 {
 	$paymentMethod="Online Payment";
-	$api = new Instamojo\Instamojo($API_KEY, $AUTH_TOKEN);
-	echo "1";
-	try {
-		echo "2";
-		$response = $api->paymentRequestCreate(array(
-			"purpose" => "FIFA 16",
-			"amount" => "3499"
-		));
-		print_r($response);
-	}
-	catch (Exception $e) {
-		echo "3";
-		print('Error: ' . $e->getMessage());
-	}
-	echo "4";	
+	$instaDetail= array("X-Api-Key:".$Insta_API_KEY, "X-Auth-Token:".$Insta_AUTH_TOKEN);
+
+	$sql = "SELECT * from orders order by id desc limit 1";
+	$result=mysqli_query($connection,$sql);
+	$price=0;
+ 	foreach($_SESSION['cart'] as $id => $value){
+ 		$price=$_SESSION['cart'][$id]['total']+$price;
+ 	}
+ 	echo $price;
+	
+	$ch = curl_init();
+
+	curl_setopt($ch, CURLOPT_URL, 'https://www.instamojo.com/api/1.1/payment-requests/');
+	curl_setopt($ch, CURLOPT_HEADER, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+	curl_setopt($ch, CURLOPT_HTTPHEADER,$instaDetail);
+	$payload = Array(
+		'purpose' => 'Order ',
+		'amount' => '2500',
+		'phone' => '9999999999',
+		'buyer_name' => 'John Doe',
+		'redirect_url' => 'http://www.example.com/redirect/',
+		'send_email' => true,
+		'webhook' => 'http://www.example.com/webhook/',
+		'send_sms' => true,
+		'email' => 'foo@example.com',
+		'allow_repeated_payments' => false
+	);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
+	$response = curl_exec($ch);
+	curl_close($ch); 
+
+	echo $response;
 }
 
 // $sql = "SELECT * from users where id=".$_SESSION['id'];

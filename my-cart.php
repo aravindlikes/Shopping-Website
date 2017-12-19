@@ -122,7 +122,7 @@ if(isset($_POST['remove']))
 									</td>
 									<td>
 										<span class="cart-grand-total-price">
-											<?php echo ($_SESSION['cart'][$row['id']]['quantity']*$cur_price+$row['shippingCharge']); ?>.00
+											<?php echo $_SESSION['cart'][$row['id']]['total']=($_SESSION['cart'][$row['id']]['quantity']*$cur_price+$row['shippingCharge']); ?>.00
 										</span>
 									</td>
 								</tr>
